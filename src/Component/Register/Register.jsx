@@ -1,21 +1,30 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Form } from "react-router-dom";
 import auth from "../../firebase/fairbase.confin";
+import { useState } from "react";
 
 
 const Register = () => {
+const [registerError,setRegistererror] = useState('')
+const [sucess,setSucess] = useState('') 
+
+
   const handleRegister = e =>{
     e.preventDefault()
     // console.log("form paicha");
     const email = e.target.email.value ;
     const password = e.target.password.value;
     console.log(email,password);
+    setRegistererror('')
+  setSucess('')
     createUserWithEmailAndPassword(auth,email,password)
     .then(result =>{
       console.log(result.user);
+      setSucess("user done sucessfully")
     })
     .catch(error =>{
       console.log(error);
+      setRegistererror(error.message)
     })
   }
   return (
@@ -31,7 +40,23 @@ const Register = () => {
 
 
         </Form>
+
+         {
+        registerError  && <h2>{registerError}     </h2>     //: <h3>wow</h3>
+
+} 
+
+
+{
+  sucess && <h3>{sucess}</h3>
+
+}
+{/* 
+        {
+        registerError && <h2 className="">{registerError} </h2>
+} */}
        </div>
+       
     </div>
   );
 };

@@ -1,4 +1,7 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Form } from "react-router-dom";
+import auth from "../../firebase/fairbase.confin";
+import { Result } from "postcss";
 
 
 const HeroLogin = () => {
@@ -9,6 +12,14 @@ const HeroLogin = () => {
     const password = e.target.password.value;
 
     console.log(email,password); 
+
+    createUserWithEmailAndPassword(auth,email,password)
+    .then(result =>{
+      console.log(result.user);
+    })
+    .catch(error =>{
+      console.log(error);
+    })
   }
   return (
     <div className="hero min-h-screen bg-base-200">
