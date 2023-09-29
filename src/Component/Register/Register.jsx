@@ -2,11 +2,13 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Form } from "react-router-dom";
 import auth from "../../firebase/fairbase.confin";
 import { useState } from "react";
+import { FaEyeSlash,FaEye } from 'react-icons/fa';
 
 
 const Register = () => {
 const [registerError,setRegistererror] = useState('')
 const [sucess,setSucess] = useState('') 
+const [showPassword,setShowPassword] = useState(false)
 
 
   const handleRegister = e =>{
@@ -15,8 +17,19 @@ const [sucess,setSucess] = useState('')
     const email = e.target.email.value ;
     const password = e.target.password.value;
     console.log(email,password);
+
     setRegistererror('')
-  setSucess('')
+    setSucess('')
+    if(password.length<6){
+      setRegistererror("password should be in 6 charecters")
+      return
+    }
+    else if(!/[A-Z]/.test(password)){
+      setRegistererror("your password should be at least one upper case")
+      return
+    }
+  
+    
     createUserWithEmailAndPassword(auth,email,password)
     .then(result =>{
       console.log(result.user);
@@ -32,9 +45,9 @@ const [sucess,setSucess] = useState('')
        <div className="mx-auto md:w-1/2">
        <h3 className="text-4xl">Register Here</h3>
         <Form  onSubmit={handleRegister}  className=" space-y-1">
-        <input className="w-3/4 py-2 text-2xl px-4" placeholder="email Address"   type="email" name="email" id="" />
+        <input className="w-3/4 py-2 text-2xl px-4" placeholder="email Address"   type="email" name="email" required id="" />
         <br />
-        <input className="w-3/4 py-2  text-2xl px-4" placeholder="password..."  type="password" name="password" id="" />
+        <input className="w-3/4 py-2  text-2xl px-4" placeholder="password..."  type={showPassword ? "text": "password"} name="password"  required id="" /><span onClick={ () =>setShowPassword(!showPassword)}>{showPassword ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>}</span>
         <br />
         <input className="w-3/4 text-lg btn btn-secondary" type="submit" value="Register" />
 
