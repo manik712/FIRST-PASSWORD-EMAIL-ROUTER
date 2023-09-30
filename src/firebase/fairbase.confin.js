@@ -12,13 +12,13 @@ const firebaseConfig = {
   projectId: "first-password-email-router",
   storageBucket: "first-password-email-router.appspot.com",
   messagingSenderId: "94359417023",
-  appId: "1:94359417023:web:c0596b19334569f0d5d60a"
+  appId: "1:94359417023:web:c0596b19334569f0d5d60a",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// 
+//
 const auth = getAuth(app);
 
-export default auth
+export default auth;
