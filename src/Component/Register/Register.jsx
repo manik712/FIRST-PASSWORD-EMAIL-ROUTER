@@ -47,7 +47,7 @@ const [showPassword,setShowPassword] = useState(false)
         <Form  onSubmit={handleRegister}  className=" space-y-1">
         <input className="w-3/4 py-2 text-2xl px-4" placeholder="email Address"   type="email" name="email" required id="" />
         <br />
-        <input className="w-3/4 py-2  text-2xl px-4" placeholder="password..."  type={showPassword ? "text": "password"} name="password"  required id="" /><span onClick={ () =>setShowPassword(!showPassword)}>{showPassword ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>}</span>
+        <input className="w-3/4 py-2  text-2xl px-4" placeholder="password..."  type={showPassword ? "text": "password"} name="password"  required id=""/><span onClick={ () =>setShowPassword(!showPassword)}>{showPassword ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>}</span>
         <br />
         <input className="w-3/4 text-lg btn btn-secondary" type="submit" value="Register" />
 
