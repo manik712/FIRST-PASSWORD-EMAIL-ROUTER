@@ -1,4 +1,8 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
+} from "firebase/auth";
 import { Form, Link } from "react-router-dom";
 import auth from "../../firebase/fairbase.confin";
 import { useState } from "react";
@@ -12,10 +16,11 @@ const Register = () => {
   const handleRegister = (e) => {
     e.preventDefault();
     // console.log("form paicha");
+    const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     const Accepted = e.target.terms.checked;
-    console.log(email, password, Accepted);
+    console.log(name, email, password, Accepted);
 
     setRegisterError("");
     setSuccess("");
@@ -34,6 +39,16 @@ const Register = () => {
       .then((result) => {
         console.log(result.user);
         setSuccess("user done successfully");
+
+        updateProfile(result.user, {
+          displayName: name,
+          photoURL: "https://example.com/jane-q-user/profile.jpg",
+        })
+          .then(() => console.log("prof.updated"))
+          .catch(() => {});
+        sendEmailVerification(result.user).then(() => {
+          alert("Please check your email and verify your account");
+        });
       })
       .catch((error) => {
         console.log(error.user);
@@ -50,6 +65,14 @@ const Register = () => {
             placeholder="email Address"
             type="email"
             name="email"
+            required
+            id=""
+          />
+          <input
+            className="w-3/4 py-2 text-2xl px-4"
+            placeholder="your name"
+            type="text"
+            name="name"
             required
             id=""
           />

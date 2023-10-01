@@ -1,11 +1,16 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import auth from "../../firebase/fairbase.confin";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Login = () => {
   const [loginError, setLoginError] = useState("");
   const [success, setSuccess] = useState("");
+  // const [emailError, setEmailError] = useState("");
+  const emailRef = useRef(null);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -17,15 +22,39 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         console.log(result.user);
-        setSuccess("user done it");
+        if(result.user.emailVerified
+          ){
+          setSuccess("user done it");
+        }else {
+          alert("please verify your email")
+        }
+        
       })
       .catch((error) => {
         console.log(error.message);
         setLoginError(error.message);
       });
   };
-  const handleForGetPassword = (e) => {
-    console.log("");
+  const handleForGetPassword = (event) => {
+    const email1 = emailRef.current.value;
+
+    if (!email1) {
+      console.log("input a email");
+      return;
+    } else if (
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email1)
+    ) {
+      console.log("please write a valid email");
+      return;
+    }
+    //validation email
+    sendPasswordResetEmail(auth, email1)
+      .then(() => {
+        alert("please check a email");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -47,6 +76,7 @@ const Login = () => {
                   <span className="label-text">Email</span>
                 </label>
                 <input
+                  ref={emailRef}
                   type="text"
                   placeholder="email"
                   name="email"
